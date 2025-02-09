@@ -1,11 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
-import { MainPage } from '../src/pages/mainPage';
-import { RegisterPage } from '../src/pages/registerPage';
-import { YourfeedPage } from '../src/pages/yourfeedPage';
-import { AuthPage } from '../src/pages/authPage';
-import { ProfileSettingsPage } from '../src/pages/profilesettingsPage';
-
+import { MainPage, RegisterPage, YourfeedPage, AuthPage, ProfileSettingsPage } from '../src/pages/index';
+import { UserBuilder, NewPasswordBuilder } from '../src/helpers/builders/index';
 
 
 
@@ -13,11 +8,11 @@ import { ProfileSettingsPage } from '../src/pages/profilesettingsPage';
 const URL_UI = 'https://realworld.qa.guru/';
 
 test.describe('User actions with profile', () => {
-    const user = {
-        email: faker.internet.email(),
-        password: faker.internet.password({ length: 10 }),
-        username: faker.person.firstName(),
-    };
+    const userBuilder = new UserBuilder()
+			.addEmail()
+			.addUsername()
+			.addPassword(10)
+			.generate();
 
 	test.beforeEach(async ({ page }) => {
 		//todo подготовка состояния
@@ -27,9 +22,9 @@ test.describe('User actions with profile', () => {
 
 		await mainPage.open(URL_UI);
 		await mainPage.gotoRegister();
-		await registerPage.register(user.username, user.email, user.password);
+		await registerPage.register(userBuilder.username, userBuilder.email, userBuilder.password);
 		await expect(yourfeedPage.profileNameField).toBeVisible();
-		await expect(yourfeedPage.profileNameField).toContainText(user.username);
+		await expect(yourfeedPage.profileNameField).toContainText(userBuilder.username);
 	});
 
 	test('Пользователь может  изменить пароль', async ({ page }) => {
@@ -38,14 +33,15 @@ test.describe('User actions with profile', () => {
         const yourfeedPage = new YourfeedPage(page);
 	    const profilesettingsPage = new ProfileSettingsPage(page);
 	    
-
-        const newpassword = faker.internet.password({ length: 10 });
-
+		const newPasswordBuilder = new NewPasswordBuilder()
+			.addNewPassword(10)
+			.generate();
+        
         await yourfeedPage.gotoProfileSettings();
-        await profilesettingsPage.changePassword(newpassword);
+        await profilesettingsPage.changePassword(newPasswordBuilder.newpassword);
         await yourfeedPage.logout();
         await mainPage.gotoAuth();
-        await authPage.auth(user.email, newpassword);
+        await authPage.auth(userBuilder.email, newPasswordBuilder.newpassword);
 		await page.waitForTimeout(3000);
         await expect(yourfeedPage.profileNameField).toBeVisible();
 
