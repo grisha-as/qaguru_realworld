@@ -3,6 +3,7 @@ export class ArticlePage {
 		this.page = page;
 
 		this.postCommentButton = page.getByRole('button', { name: 'Post Comment' });
+		this.homeButton = page.getByRole('link', { name: 'Home' });
 
 		this.titleField = page.getByRole('heading');
 		this.textArticleField = page.getByRole('paragraph');
@@ -14,6 +15,10 @@ export class ArticlePage {
 		await this.commentTextbox.click();
 		await this.commentTextbox.fill(text);
 		await this.postCommentButton.click();
+	}
+
+	async goToHome() {
+		await this.homeButton.click();	
 	}
 
 }
