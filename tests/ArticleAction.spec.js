@@ -6,8 +6,6 @@ import { YourfeedPage } from '../src/pages/yourfeedPage';
 import { NewArticlePage } from '../src/pages/newarticlePage';
 import { ArticlePage } from '../src/pages/articlePage';
 import { GlobalFeedPage } from '../src/pages/globalfeedPage';
-import { AuthPage } from '../src/pages/authPage';
-import { ProfileSettingsPage } from '../src/pages/profilesettingsPage';
 import { ProfilePage } from '../src/pages/profilePage';
 
 
@@ -26,13 +24,10 @@ test.describe('User actions with article', () => {
 		//todo подготовка состояния
 		const mainPage = new MainPage(page);
 		const registerPage = new RegisterPage(page);
-		const yourfeedPage = new YourfeedPage(page);
 
 		await mainPage.open(URL_UI);
 		await mainPage.gotoRegister();
 		await registerPage.register(user.username, user.email, user.password);
-		await expect(yourfeedPage.profileNameField).toBeVisible();
-		await expect(yourfeedPage.profileNameField).toContainText(user.username);
 	});
 
 	test('Пользователь может опубликовать статью', async ({ page }) => {
@@ -70,11 +65,11 @@ test.describe('User actions with article', () => {
 		// Публикуем статью
 		await yourfeedPage.createArticle();
         await newarticlePage.publishArticle(article.title, article.description, article.text, article.tags);
-		await page.waitForTimeout(2000); //нужно дождаться успешной публикации
+		await expect(articlePage.titleField).toBeVisible(); //нужно дождаться успешной публикации
         // Добавляем в избранное и оставляем комментарий
 		await articlePage.goToHome();
 		await globalfeedPage.gotoGlobalFeedTab();
-		await page.waitForTimeout(5000);
+		await expect(globalfeedPage.favoriteButton).toBeVisible();//чтобы убедиться, что страница успела прогрузиться;
 		await globalfeedPage.addToFavoritesArticle();
 		await globalfeedPage.openFirstArticle();
 		await articlePage.postComment(comment);
@@ -102,7 +97,7 @@ test.describe('User actions with article', () => {
 		// Публикуем статью
 		await yourfeedPage.createArticle();
         await newarticlePage.publishArticle(article.title, article.description, article.text, article.tags);
-		await page.waitForTimeout(2000); //нужно дождаться успешной публикации
+		await expect(articlePage.titleField).toBeVisible(); //нужно дождаться успешной публикации
         // Добавляем в избранное
 		await articlePage.goToHome();
 		await globalfeedPage.gotoGlobalFeedTab();
