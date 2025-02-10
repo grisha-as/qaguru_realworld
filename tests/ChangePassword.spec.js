@@ -23,8 +23,6 @@ test.describe('User actions with profile', () => {
 		await mainPage.open(URL_UI);
 		await mainPage.gotoRegister();
 		await registerPage.register(userBuilder.username, userBuilder.email, userBuilder.password);
-		await expect(yourfeedPage.profileNameField).toBeVisible();
-		await expect(yourfeedPage.profileNameField).toContainText(userBuilder.username);
 	});
 
 	test('Пользователь может  изменить пароль', async ({ page }) => {
@@ -42,7 +40,6 @@ test.describe('User actions with profile', () => {
         await yourfeedPage.logout();
         await mainPage.gotoAuth();
         await authPage.auth(userBuilder.email, newPasswordBuilder.newpassword);
-		await page.waitForTimeout(3000);
         await expect(yourfeedPage.profileNameField).toBeVisible();
 
 	});

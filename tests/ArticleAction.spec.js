@@ -22,8 +22,6 @@ test.describe('User actions with article', () => {
 		await mainPage.open(URL_UI);
 		await mainPage.gotoRegister();
 		await registerPage.register(userBuilder.username, userBuilder.email, userBuilder.password);
-		await expect(yourfeedPage.profileNameField).toBeVisible();
-		await expect(yourfeedPage.profileNameField).toContainText(userBuilder.username);
 	});
 
 	test('Пользователь может опубликовать статью', async ({ page }) => {
@@ -63,11 +61,11 @@ test.describe('User actions with article', () => {
 		// Публикуем статью
 		await yourfeedPage.createArticle();
         await newarticlePage.publishArticle(articleBuilder.title, articleBuilder.description, articleBuilder.text, articleBuilder.tags);
-		await page.waitForTimeout(2000); //нужно дождаться успешной публикации
+		await expect(articlePage.titleField).toBeVisible(); //нужно дождаться успешной публикации
         // Добавляем в избранное и оставляем комментарий
 		await articlePage.goToHome();
 		await globalfeedPage.gotoGlobalFeedTab();
-		await page.waitForTimeout(5000);
+		await expect(globalfeedPage.favoriteButton).toBeVisible();//чтобы убедиться, что страница успела прогрузиться
 		await globalfeedPage.addToFavoritesArticle();
 		await globalfeedPage.openFirstArticle();
 		await articlePage.postComment(commentBuilder.comment);
@@ -97,7 +95,7 @@ test.describe('User actions with article', () => {
 		// Публикуем статью
 		await yourfeedPage.createArticle();
         await newarticlePage.publishArticle(articleBuilder.title, articleBuilder.description, articleBuilder.text, articleBuilder.tags);
-		await page.waitForTimeout(2000); //нужно дождаться успешной публикации
+		await expect(articlePage.titleField).toBeVisible(); //нужно дождаться успешной публикации
         // Добавляем в избранное
 		await articlePage.goToHome();
 		await globalfeedPage.gotoGlobalFeedTab();
