@@ -21,6 +21,7 @@ test.describe('User actions with profile', () => {
 
 		await mainPage.open(URL_UI);
 		await mainPage.gotoRegister();
+
 		await registerPage.register(userBuilder.username, userBuilder.email, userBuilder.password);
 	});
 
