@@ -4,17 +4,26 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "testui": "npx playwright test --ui"
+    "testui": "npx playwright test --ui",
+    "reportAwesome": "npx allure awesome ./allure-results --single-file",
+    "reportClassic": "npx allure classic ./allure-results --single-file"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
     "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.0"
+    "@types/node": "^22.13.0",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.4.0"
+    "@faker-js/faker": "^9.4.0",
+    "allure": "^3.0.0-beta.8",
+    "allure-playwright": "^3.1.0",
+    "eslint-config-prettier": "^10.1.1",
+    "prettier": "^3.5.3"
   }
 }
