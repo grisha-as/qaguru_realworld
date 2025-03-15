@@ -18,7 +18,6 @@ test.describe('User actions with profile', () => {
 		//todo подготовка состояния
 		const mainPage = new MainPage(page);
 		const registerPage = new RegisterPage(page);
-		const yourfeedPage = new YourfeedPage(page);
 
 		await mainPage.open(URL_UI);
 		await mainPage.gotoRegister();
